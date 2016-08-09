@@ -66,7 +66,7 @@ class Handring(object):
         self.box_pose[1].orientation.w = 0.891869
 
         # ======== Object Info ======== #
-        self.diff = 0.11
+        self.diff = 0.12
         self.offset = 0.45
         box_sub = rospy.Subscriber('/clustering_result', BoundingBoxArray, self.bbArrayCallback)
         self.initial_box_num = 0
@@ -101,7 +101,8 @@ class Handring(object):
     # -------- Get TF -------- #
     def get_tf_data(self, num):
         tf_time = rospy.Time(0)
-        target = "object_" + str(num)
+        target = "cnn_object"
+        #target = "object_" + str(num)
         get_tf_flg = False
         while not get_tf_flg :
             try :
@@ -180,10 +181,10 @@ class Handring(object):
         rospy.sleep(0.5)
 
         print "Going up"
-        self.set_plan(trans, self.offset + 0.1)
+        self.set_plan(trans, self.offset - self.diff + 0.04)
 
-        print "Go to Box"
-        self.go_box(box_num)
+        # print "Go to Box"
+        # self.go_box(box_num)
 
         # Release
         print "!! Release !!"
