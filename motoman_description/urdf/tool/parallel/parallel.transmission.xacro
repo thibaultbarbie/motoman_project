@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  
+  <xacro:macro name="trans_parallel_grip_v0" params="prefix">
+	<transmission name="parallel_${prefix}_grip_transmission">
+	  <type>transmission_interface/SimpleTransmission</type>
+	  <joint name="parallel_${prefix}_grip_joint">
+		<hardwareInterface>PositionJointInterface</hardwareInterface>
+	  </joint>
+	  <actuator name="parallel_${prefix}_grip_motor">
+		<hardwareInterface>PositionJointInterface</hardwareInterface>
+		<mechanicalReduction>1</mechanicalReduction>
+	  </actuator>
+	</transmission>
+  </xacro:macro>
+  
+</robot>

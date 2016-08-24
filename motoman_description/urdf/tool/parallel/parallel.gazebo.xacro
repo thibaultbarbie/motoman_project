@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="gazebo_parallel_base_v0" params="color">
+	<gazebo reference="parallel_base_link">
+	  <mu1>1.0</mu1>
+	  <mu2>1.0</mu2>
+	  <selfCollide>true</selfCollide>
+	  <material>Gazebo/${color}</material>
+	</gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="gazebo_parallel_grip_v0" params="prefix color">
+	<gazebo reference="parallel_${prefix}_grip_link">
+	  <mu1>1.0</mu1>
+	  <mu2>1.0</mu2>
+	  <selfCollide>true</selfCollide>
+	  <material>Gazebo/${color}</material>
+	</gazebo>
+  </xacro:macro>
+</robot>

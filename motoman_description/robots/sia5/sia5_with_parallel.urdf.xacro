@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<robot name="sia5" xmlns:xacro="http://ros.org/wiki/xacro">
+  <!-- File Include -->
+  <xacro:include filename="$(find motoman_description)/urdf/tool/parallel/parallel.urdf.xacro"/>
+  <xacro:include filename="$(find motoman_description)/robots/sia5/sia5.urdf.xacro"/>
+
+  <xacro:parallel_base_v0 parent="tool0"/>
+  <xacro:parallel_grip_v0 prefix="right">
+  	<origin xyz="0.075 -0.0625 0"/>
+  </xacro:parallel_grip_v0>
+  <xacro:parallel_grip_v0 prefix="left">
+  	<origin xyz="0.075 0.0625 0" rpy="${M_PI} 0 0"/>
+  </xacro:parallel_grip_v0>
+  
+</robot>

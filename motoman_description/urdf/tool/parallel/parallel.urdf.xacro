@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <!-- import File -->
+  <!-- <xacro:include filename="$(find motoman_description)/urdf/common.xacro"/> -->
+  <!-- <xacro:include filename="$(find motoman_description)/urdf/materials.xacro"/> -->
+  <xacro:include filename="$(find motoman_description)/urdf/tool/parallel/parallel.gazebo.xacro"/>
+  <xacro:include filename="$(find motoman_description)/urdf/tool/parallel/parallel.transmission.xacro"/>
+
+  <xacro:macro name="parallel_base_v0" params="parent">
+	<joint name="parallel_base_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="parallel_base_link"/>
+	  <origin xyz="0.025 0 0"/>
+	</joint>
+	
+	<link name="parallel_base_link">
+	  <visual>
+		<geometry>
+		  <box size="0.05 .15 .05"/>
+		</geometry>
+		<material name="blue"/>
+	  </visual>
+	  
+	  <collision>
+		<geometry>
+		  <box size="0.05 .15 .05"/>
+		</geometry>
+	  </collision>
+	  
+	  <xacro:box_inertial mass="1.5" height="0.05" width="0.2" depth="0.05"/>
+	</link>
+
+	<xacro:gazebo_parallel_base_v0 color="Blue"/>
+  </xacro:macro>
+
+  <xacro:macro name="parallel_grip_v0" params="prefix *origin">
+	<joint name="parallel_${prefix}_grip_joint" type="prismatic">
+	  <axis xyz="0 1 0"/>
+	  <insert_block name="origin"/>
+	  <parent link="parallel_base_link"/>
+	  <child link="parallel_${prefix}_grip_link"/>
+	  <limit lower="0" upper="0.05" effort="0.5" velocity="6.0" />
+	</joint>
+
+	<link name="parallel_${prefix}_grip_link">
+	  <visual>
+		<geometry>
+		  <box size="0.1 0.025 0.025"/>
+		</geometry>
+		<material name="white"/>
+	  </visual>
+	  
+	  <collision>
+		<geometry>
+		  <box size="0.025 0.05 0.1"/>
+		</geometry>
+	  </collision>
+
+	  <xacro:box_inertial mass="0.75" height="0.1" width="0.025" depth="0.05"/>
+	</link>
+
+	<xacro:gazebo_parallel_grip_v0 prefix="${prefix}" color="White"/>
+	<xacro:trans_parallel_grip_v0 prefix="${prefix}"/>
+  </xacro:macro>
+</robot>
