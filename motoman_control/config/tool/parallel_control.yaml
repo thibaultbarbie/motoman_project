@@ -1,15 +1,22 @@
 # Position Controllers ---------------------------------------
 parallel_controller:
+  # right:
+  #    type: position_controllers/GripperActionController
+  #    action_monitor_rate: 50
+  #    joint: parallel_right_grip_joint
+  #    gains:
+  #      parallel_right_grip_joint: {p: 100, i: 10, d: 0, i_clamp: 100}
+  # left:
+  #    type: position_controllers/GripperActionController
+  #    action_monitor_rate: 50
+  #    joint: parallel_left_grip_joint
+  #    gains:
+  #      parallel_left_grip_joint: {p: 100, i: 10, d: 0, i_clamp: 100}
   right:
-     type: position_controllers/GripperActionController
-     action_monitor_rate: 50
-     joint: parallel_right_grip_joint
-     gains:
-       parallel_right_grip_joint: {p: 100, i: 10, d: 0, i_clamp: 100}
+    type: position_controllers/JointPositionController
+    joint: parallel_right_grip_joint
+    pid: {p: 100, i: 10, d: 0, i_clamp: 100}
   left:
-     type: position_controllers/GripperActionController
-     action_monitor_rate: 50
-     joint: parallel_left_grip_joint
-     gains:
-       parallel_left_grip_joint: {p: 100, i: 10, d: 0, i_clamp: 100}
- 
+    type: position_controllers/JointPositionController
+    joint: parallel_left_grip_joint
+    pid: {p: 100, i: 10, d: 0, i_clamp: 100}
