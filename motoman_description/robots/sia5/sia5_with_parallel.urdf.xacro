@@ -2,8 +2,12 @@
 <robot name="sia5" xmlns:xacro="http://ros.org/wiki/xacro">
   <!-- File Include -->
   <xacro:include filename="$(find motoman_description)/urdf/tool/parallel/parallel.urdf.xacro"/>
-  <xacro:include filename="$(find motoman_description)/robots/sia5/sia5.urdf.xacro"/>
+  <xacro:include filename="$(find motoman_description)/robots/sia5/sia5_basic.urdf.xacro"/>
 
+  <xacro:add_world>
+    <origin xyz="0 0 0.2" rpy="0 0 0"/>
+  </xacro:add_world>
+  
   <xacro:parallel_base_v0 parent="tool0"/>
   <xacro:parallel_grip_v0 prefix="right">
   	<origin xyz="0.075 -0.0625 0"/>
