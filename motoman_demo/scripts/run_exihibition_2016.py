@@ -167,7 +167,7 @@ class Handring(object):
     # -------- Run the Program -------- #
     def run(self, obj_num, box_num):
         trans = self.get_tf_data(obj_num)
-        print "world -> object_" + str(obj_num)
+        print "world -> cnnobject"
         print trans.transform
 
         print "Go to Grasp."
@@ -181,10 +181,10 @@ class Handring(object):
         rospy.sleep(0.5)
 
         print "Going up"
-        self.set_plan(trans, self.offset - self.diff + 0.04)
+        self.set_plan(trans, self.offset + 0.1)
 
         # print "Go to Box"
-        # self.go_box(box_num)
+        self.go_box(box_num)
 
         # Release
         print "!! Release !!"
