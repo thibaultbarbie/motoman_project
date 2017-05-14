@@ -10,7 +10,7 @@
 	<arg name="use_bswap" default="true" />
 	<arg name="version0" default="true" />
 	<arg name="model" value="$(find motoman_description)/robots/sia5/sia5_with_dhand_and_multi_kinect.urdf.xacro"/>
-	
+
 	<!-- load URDF description -->
 	<param name="robot_description" command="$(find xacro)/xacro.py '$(arg model)'"/>
 
@@ -22,14 +22,14 @@
       <param name="joint_state_republish_topic_name" value="/joint_states" />
       <param name="joint_state_subscribe_topic_name" value="/sia5/joint_states" />
 	</node>
-	
+
 	<!-- robot state publisher -->
 	<node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher"/>
 
 	<!--======== from here robot interface streaming ======== -->
 	<param name="robot_ip_address" type="str" value="$(arg robot_ip)" />
 	<param name="version0" type="bool" value="$(arg version0)" />
-	
+
 	<!-- load the correct version of the motion streaming node -->
 	<node if="$(arg use_bswap)" name="motion_streaming_interface"
 		  pkg="motoman_driver" type="motion_streaming_interface_bswap" >
@@ -39,18 +39,18 @@
 		  pkg="motoman_driver" type="motion_streaming_interface" >
 	  <remap from="/joint_states" to="/sia5/joint_states"/>
 	</node>
-	
+
 	<node if="$(arg version0)" name="joint_trajectory_action"
 		pkg="industrial_robot_client" type="joint_trajectory_action" />
 	<node unless="$(arg version0)" name="joint_trajectory_action"
 		pkg="motoman_driver" type="motoman_driver_joint_trajectory_action" />
 
 
-	<node if="$(arg use_bswap)" name="joint_state" 
+	<node if="$(arg use_bswap)" name="joint_state"
 		  pkg="motoman_driver" type="robot_state_bswap" >
 	  <remap from="/joint_states" to="sia5/joint_states"/>
 	</node>
-	<node unless="$(arg use_bswap)" name="joint_state" 
+	<node unless="$(arg use_bswap)" name="joint_state"
 		  pkg="motoman_driver" type="robot_state" >
 	  <remap from="/joint_states" to="sia5/joint_states"/>
 	</node>
