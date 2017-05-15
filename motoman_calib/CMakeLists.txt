@@ -16,19 +16,13 @@ include_directories(
   include
 ${catkin_INCLUDE_DIRS})
 
-catkin_package()
-
 ## Declare a C++ executable
 add_executable(motoman_calib src/calib.cpp)
-add_executable(shift_frame src/shift_frame.cpp)
+
 
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(motoman_calib pcl_common pcl_io
-  ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${VTK_LIBRARIES}
-)
-
-target_link_libraries(shift_frame pcl_common pcl_io
   ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${VTK_LIBRARIES}
 )
 
