@@ -226,42 +226,44 @@ public:
     return;
   }
 
-  // void cropBox(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,
-  //              pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_filtered)
-  // {
-  //   pcl::PassThrough<pcl::PointXYZ> passthrough_filter;
-  //   passthrough_filter.setInputCloud(cloud);
-  //   passthrough_filter.setFilterFieldName("z");
-  //   // passthrough_filter.setFilterLimits(-1.0, 0.1);
-  // 	passthrough_filter.setFilterLimits(-1.0, 0.1);
-  //   passthrough_filter.setFilterLimitsNegative (true);
-  //   passthrough_filter.filter (*cloud);
-  // 	passthrough_filter.setInputCloud(cloud);
-  // 	passthrough_filter.setFilterFieldName("x");
-  //   // passthrough_filter.setFilterLimits(-1.0, -0.1);
-  // 	passthrough_filter.setFilterLimits(-1.0, -0.3);
-  //   passthrough_filter.setFilterLimitsNegative (true);
-  //   passthrough_filter.filter (*cloud);
+  void cropBox(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,
+               pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_filtered)
+  {
+    pcl::PassThrough<pcl::PointXYZ> passthrough_filter;
+    passthrough_filter.setInputCloud(cloud);
+    passthrough_filter.setFilterFieldName("z");
+    // passthrough_filter.setFilterLimits(-1.0, 0.1);
+  	passthrough_filter.setFilterLimits(-5.0, -0.2);
+    passthrough_filter.setFilterLimitsNegative (true);
+    passthrough_filter.filter (*cloud);
+  	passthrough_filter.setInputCloud(cloud);
+  	passthrough_filter.setFilterFieldName("x");
+    // passthrough_filter.setFilterLimits(-1.0, -0.1);
+  	passthrough_filter.setFilterLimits(-5.0, -0.5);
+    passthrough_filter.setFilterLimitsNegative (true);
+    passthrough_filter.filter (*cloud);
+	std::cout << "===================================" << std::endl;
+	std::cout << cloud->points.size() << std::endl;
 
-  //   pcl::search::KdTree<pcl::PointXYZ> kdtree;
-  //   kdtree.setInputCloud(cloud);
-  //   pcl::PointXYZ search_point;
-  //   search_point.x = 0;
-  //   search_point.y = 0;
-  //   search_point.z = 0;
-  //   double search_radius = 1.0;
-  //   std::vector<float> point_radius_squared_distance;
-  //   pcl::PointIndices::Ptr point_idx_radius_search(new pcl::PointIndices());
+    pcl::search::KdTree<pcl::PointXYZ> kdtree;
+    kdtree.setInputCloud(cloud);
+    pcl::PointXYZ search_point;
+    search_point.x = 0;
+    search_point.y = 0;
+    search_point.z = 0;
+    double search_radius = 1.0;
+    std::vector<float> point_radius_squared_distance;
+    pcl::PointIndices::Ptr point_idx_radius_search(new pcl::PointIndices());
 
-  //   if ( kdtree.radiusSearch (search_point, search_radius, point_idx_radius_search->indices, point_radius_squared_distance) > 0 )
-  //   {
-  //     pcl::ExtractIndices<pcl::PointXYZ> extractor;
-  //     extractor.setInputCloud(cloud);
-  //     extractor.setIndices(point_idx_radius_search);
-  //     extractor.setNegative(false);
-  //     extractor.filter(*cloud_filtered);
-  //   }
-  // }
+    if ( kdtree.radiusSearch (search_point, search_radius, point_idx_radius_search->indices, point_radius_squared_distance) > 0 )
+    {
+      pcl::ExtractIndices<pcl::PointXYZ> extractor;
+      extractor.setInputCloud(cloud);
+      extractor.setIndices(point_idx_radius_search);
+      extractor.setNegative(false);
+      extractor.filter(*cloud_filtered);
+    }
+  }
 
   void downSampling(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,
 					pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_filtered)
@@ -305,7 +307,7 @@ public:
 		Eigen::Affine3f eigen_affine_transform(eigen_transform);
 		pcl::transformPointCloud(*pcl_pc, *pcl_shifted_cloud_, eigen_affine_transform);
 		
-		// this->cropBox(pcl_shifted_cloud_, pcl_shifted_cloud_);
+		this->cropBox(pcl_shifted_cloud_, pcl_shifted_cloud_);
 		this->downSampling(pcl_shifted_cloud_, pcl_shifted_cloud_);
 		ROS_INFO_STREAM("shifted_cloud size : " << pcl_shifted_cloud_->points.size());
 		sensor_msgs::PointCloud2 ros_shifted_cloud;
@@ -370,6 +372,7 @@ public:
 			Eigen::Matrix4d world_to_corrected = (icp.getFinalTransformation()).cast<double>();
 			Eigen::Matrix4d matrix_kinect_to_world = kinect_to_world_transform.matrix();
 			Eigen::Matrix4d kinect_first_to_corrected = world_to_corrected*matrix_kinect_to_world;
+			kinect_first_to_corrected = kinect_first_to_corrected.normalized();
 			Eigen::Affine3d eigen_affine3d(kinect_first_to_corrected);
 			tf::transformEigenToTF(eigen_affine3d, fixed_kinect_frame_);
 			Eigen::Matrix3d rotation_matrix = kinect_first_to_corrected.block(0, 0, 3, 3);
