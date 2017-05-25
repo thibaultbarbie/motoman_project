@@ -12,6 +12,10 @@ find_package(catkin REQUIRED COMPONENTS
 
 find_package(VTK REQUIRED)
 
+catkin_package(
+  CATKIN_DEPENDS
+)
+
 include_directories(
   include
 ${catkin_INCLUDE_DIRS})
