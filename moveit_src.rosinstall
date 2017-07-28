@@ -1,0 +1,20 @@
+- git:
+    local-name: motoman_tools/ompl
+    uri: https://github.com/RyodoTanaka/ompl.git
+    version: ros-indigo-experiment
+- git:
+    local-name: motoman_tools/moveit
+    uri: https://github.com/RyodoTanaka/moveit.git
+    version: new-planner
+- git:
+    local-name: motoman_tools/moveit_msgs
+    uri: https://https://github.com/ros-planning/moveit_msgs.git
+    version: indigo-devel
+- git:
+    local-name: motoman_tools/srdfdom
+    uri: https://github.com/ros-planning/srdfdom.git
+    version: indigo-devel
+- git:
+    local-name: motoman_tools/industrial_moveit
+    uri: https://github.com/ros-industrial/industrial_moveit.git
+    version: indigo-devel
