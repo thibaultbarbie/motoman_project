@@ -3,8 +3,8 @@
   <!-- File Include -->
   <xacro:include filename="$(find motoman_description)/robots/sia5/sia5_basic.urdf.xacro" />
 
-  <xacro:add_world>
+  <xacro:root_link_v0 name="world">
     <origin xyz="0 0 0" rpy="0 0 0"/>
-  </xacro:add_world>
+  </xacro:root_link_v0>
 
 </robot>
