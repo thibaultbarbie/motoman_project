@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:include filename="$(find motoman_description)/urdf/sia5/arm/arm.transmission.xacro"/>
+  <xacro:include filename="$(find motoman_description)/urdf/sia5/arm/arm.gazebo.xacro"/>
+
+  
+  <xacro:macro name="link_tool_v0" params="parent
+                                           *joint_origin">
+    <link name="tool_link"/>
+    <joint name="tool_joint" type="fixed">
+      <insert_block name="joint_origin"/>
+      <parent link="${parent}"/>
+      <child link="tool_link"/>
+    </joint>
+  </xacro:macro>
+  
+  <xacro:macro name="arm_v2" params="suffix
+                                     parent
+                                     mass
+                                     *inertia_origin
+                                     *inertia
+                                     *joint_origin
+                                     *joint_limit">
+    <link name="link_${suffix}">
+      <visual>
+        <geometry>
+          <mesh filename="package://motoman_description/meshes/sia5/visual/link_${suffix}/link_${suffix}.dae"/>
+        </geometry>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://motoman_description/meshes/sia5/collision/link_${suffix}_collision.stl"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <insert_block name="inertia_origin"/>
+        <mass value="${mass}"/>
+        <insert_block name="inertia"/>
+      </inertial>
+    </link>
+
+    <joint name="joint_${suffix}" type="revolute">
+      <insert_block name="joint_origin"/>
+      <parent link="${parent}"/>
+      <child link="link_${suffix}"/>
+      <axis xyz="0 0 1"/>
+      <dynamics damping="0.7" friction="0.7"/>
+      <insert_block name="joint_limit"/>
+    </joint>
+  </xacro:macro>
+</robot>
