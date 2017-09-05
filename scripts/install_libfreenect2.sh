@@ -10,6 +10,7 @@ mkdir libs
 cd libs
 git clone https://github.com/OpenKinect/libfreenect2.git
 cd libfreenect2
+git checkout v0.1
 mkdir build && cd build
 cmake ..
 make
